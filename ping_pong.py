@@ -48,6 +48,12 @@ ball = GameSprite('ball1.png',200,200,50,50,4)
 
 speed_x = 3
 speed_y = 3
+
+font.init()
+font1 =  font.Font(None, 40)
+lose1 = font1.render('ИГРОК 1 ПРОИГРАЛ!',True,(180,0,0))
+lose2 = font1.render('ИГРОК 2 ПРОИГРАЛ!',True,(180,0,0))
+
 while game:
     for e in event.get():
         if e.type == QUIT:
@@ -61,8 +67,24 @@ while game:
         ball.rect.x += speed_x
         ball.rect.y += speed_y
 
+        if sprite.collide_rect(rocket1,ball) or sprite.collide_rect(rocket2,ball):
+            speed_x *= -1
+           
+
+        if ball.rect.y < 0 or ball.rect.y > win_height - 50:
+            speed_y *= -1
+
+        if ball.rect.x < 0:
+            finish = True 
+            window.blit(lose1, (100,200))
+        
+        if ball.rect.x > win_width - 150:
+            finish = True
+            window.blit(lose2, (100,200))
+
         rocket1.reset()
         rocket2.reset()
         ball.reset()
     display.update()
     clock.tick(FPS)
+
